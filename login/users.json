@@ -1,0 +1,17 @@
+[
+    {
+        "username": "S.Nikitko",
+        "password": "sn2009sn",
+        "status": "admin"
+    },
+    {
+        "username": "doky",
+        "password": "love",
+        "status": "admin"
+    },
+    {
+        "username": "user",
+        "password": "user",
+        "status": "user"
+    }
+]

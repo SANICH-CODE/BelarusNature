@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru" >
+<head>
+  <meta charset="UTF-8">
+  <title>BN - Status Board</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<div id="header">
+  <div class="logo">
+    <a>Vass.Ex | Belarus Nature | Система Мониторинга Работоспособности</a>
+  </div>  
+  <nav>
+    
+    <ul>
+      <li>
+        <a href="/">Home</a>
+        <a href="/login/">Авторизация</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<body>
+<!-- partial:index.partial.html -->
+<dashboard class="dashboard">
+    <dashboard-header title="Datacenter">
+        <dashboard-clock digital="true" binary="true" />
+    </dashboard-header>
+    <server-list>
+        <server v-for="(server, index) in servers" :class="{ 'has-failed': !server.status }" :type="server.type" @click.native="updateServerStatus(index)">
+            <span slot="name" class="data">{{server.name}}</span>
+            <span slot="status" class="data signal">{{server.status ? 'В сети' : 'Нет подключения'}}</span>
+            <span slot="adr" class="data">{{server.adr}}</span>
+        </server>
+    </server-list>
+</dashboard>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
