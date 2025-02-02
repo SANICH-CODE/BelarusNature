@@ -272,11 +272,35 @@
     } else {
         document.getElementById('adminName').textContent = `С возвращением, ${currentUser.username}`;
     }
-    document.getElementById('logoutButton').addEventListener('click', function (event) {
-        event.preventDefault();
-        sessionStorage.removeItem('currentUser');
-        window.location.href = '/login/';
-    });
+    if (!sessionStorage.getItem('auth_notified')) {
+            const adminName = currentUser.username;
+            const currentTime = new Date().toLocaleString('ru-RU', { hour12: false });
+            const message = encodeURIComponent(`🚨 АХТУНГ АВТОРИЗАЦИЯ\n👤 Администратор: ${adminName}\n⏳ Время: ${currentTime}`);
+
+            const botToken = '8112856615:AAG1N_yvRaHBpd5DblJ4uAo-cKE6QD1Pq-o'; // Твой токен бота
+            const chatId = '-1002079156732'; // ID группового чата
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log("✅ Сообщение отправлено в Telegram:", data);
+                        sessionStorage.setItem('auth_notified', 'true'); // Помечаем, что сообщение отправлено
+                    } else {
+                        console.error("❌ Ошибка при отправке в Telegram:", data);
+                    }
+                })
+                .catch(error => console.error("❌ Ошибка отправки уведомления:", error));
+        }
+
+        // Кнопка выхода
+        logoutButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            sessionStorage.removeItem('currentUser'); // Удаляем данные о пользователе
+            sessionStorage.removeItem('auth_notified'); // Сбрасываем флаг отправки уведомления
+            window.location.href = '/login/'; // Перенаправляем на страницу входа
+        });
+
 </script>
 
 </body>
