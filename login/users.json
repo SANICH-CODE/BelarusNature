@@ -10,6 +10,11 @@
         "status": "admin"
     },
     {
+        "username": "palilimys",
+        "password": "aboba228",
+        "status": "admin"
+    },
+    {
         "username": "user",
         "password": "user",
         "status": "user"
