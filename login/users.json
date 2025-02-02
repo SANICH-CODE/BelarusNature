@@ -5,6 +5,11 @@
         "status": "admin"
     },
     {
+        "username": "console",
+        "password": "sn2009sn",
+        "status": "root"
+    },
+    {
         "username": "doky",
         "password": "love",
         "status": "admin"

@@ -55,9 +55,11 @@
             // Переадресация в зависимости от роли
             if (user.status === 'admin') {
                 window.location.href = '/frontend/panel/admin/';
+            } else { if (user.status === 'root') {
+                window.location.href = '/frontend/panel/root/';
             } else {
                 window.location.href = 'panel.html';
-            }
+            }}
         } else {
             alert('Неверное имя пользователя или пароль');
         }
