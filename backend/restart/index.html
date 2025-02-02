@@ -3,10 +3,10 @@
     <p>Ожидание действий...</p>
 </div>
 <script>
-    const message = encodeURIComponent(`🚨 АХТУНГ ХУЯХТУНГ\nТестовое сообщение с BackEnd`);
+    const message = encodeURIComponent(`🚨 АХТУНГ ХУЯХТУНГ\nДАЙТЕ РАЗРАБУ ПОКУРИТЬ!`);
 
 const botToken = '8112856615:AAG1N_yvRaHBpd5DblJ4uAo-cKE6QD1Pq-o'; // Твой токен бота
-const chatId = '-10020791567132'; // ID группового чата
+const chatId = '-1002079156732'; // ID группового чата
     const sys_version = '10.3.11';
     console.log('BN Team | Sergei Nikitko');
     console.log('BN Team | Belarus Nature');
@@ -19,7 +19,6 @@ const chatId = '-10020791567132'; // ID группового чата
                 .then(data => {
                     if (data.ok) {
                         content.innerHTML = '<div class="alert alert-success">Выполнено</div>';
-                        
                     } else {
                         content.innerHTML = '<div class="alert alert-danger">❌ Ошибка при отправке в Telegram:</div>';
                     }

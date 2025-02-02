@@ -94,13 +94,36 @@
             align-items: center;
             gap: 10px;
         }
+        .backend-mobile-status {
+            display: block;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            background: #ffc107;
+            color: black;
+            margin-top: 10px;
+            border-radius: 5px;
+            height: 50px; /* Устанавливаем фиксированную высоту */
+            line-height: 30px; /* Центрируем текст по вертикали */
+        }
 
+/* Скрываем строку по умолчанию */
+        .d-none {
+            display: none !important;
+        }
+
+        .siframe {
+            height: 80px; /* Устанавливаем высоту iframe такой же, как у строки "Ожидание" */
+        }
         /* Адаптивность */
         @media (max-width: 992px) {
             .burger-menu {
                 display: block;
             }
-
+            .backend-mobile-status {
+                display: none !important;
+            }
             #sidebarMenu {
                 transform: translateX(-100%);
                 width: 250px;
@@ -163,6 +186,9 @@
         <li class="nav-item">
             <a class="nav-link" href="#" id="monitoringLink">Мониторинг</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="backendLink">BackEnd</a>
+        </li>
     </ul>
 </nav>
 
@@ -182,6 +208,7 @@
         const editorLink = document.getElementById('editorLink');
         const usersLink = document.getElementById('usersLink');
         const monitoringLink = document.getElementById('monitoringLink');
+        const backendLink = document.getElementById('backendLink');
         const content = document.getElementById('content');
         const sidebarMenu = document.getElementById('sidebarMenu');
         const burgerButton = document.getElementById('burgerButton');
@@ -255,6 +282,88 @@
             closeMenu();
             content.innerHTML = '<p>Редактор пока не реализован.</p>';
         });
+        backendLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    setActive(backendLink);
+    closeMenu();
+
+    content.innerHTML = `
+        <div class="container">
+            <h3 class="mb-3" id="panelTitle">Панель BackEnd</h3>
+            <div class="d-grid gap-2" id="buttonContainer">
+                <button class="btn btn-primary btn-lg backend-btn" data-url="/backend/post">📩 Отправить POST-запрос</button>
+                <button class="btn btn-warning btn-lg backend-btn" data-url="/backend/logs">📜 Логи сервера</button>
+                <button class="btn btn-danger btn-lg backend-btn" data-url="/backend/restart">🔄 Перезагрузить сервер 🚬</button>
+                <button class="btn btn-dark btn-lg backend-btn" data-url="/backend/shutdown">⛔ Выключить сервер</button>
+            </div>
+            <div id="mobileStatus" class="backend-mobile-status d-none">Ожидание...</div>
+            <div id="backendFrameContainer" class="mt-4 text-center">
+                <p class="alert alert-secondary backend-status">Ожидание...</p>
+            </div>
+        </div>
+    `;
+
+    // Функция для обработки клика по кнопке
+    function handleButtonClick(button) {
+        const url = button.getAttribute("data-url");
+        const container = document.getElementById("backendFrameContainer");
+        const mobileStatus = document.getElementById("mobileStatus");
+        const buttonContainer = document.getElementById("buttonContainer");
+        const panelTitle = document.getElementById("panelTitle");
+
+        // Скрываем все кнопки
+        buttonContainer.innerHTML = "";
+
+        // Показываем "Ожидание" на мобильных
+        if (window.innerWidth < 992) {
+            mobileStatus.classList.remove("d-none");
+        }
+
+        // Показываем анимацию загрузки
+        container.innerHTML = `<div class="alert alert-info">⏳ Выполняется запрос...</div>`;
+
+        setTimeout(() => {
+            // Вставляем iframe и изменяем его высоту
+            container.innerHTML = `<iframe class="siframe" src="${url}" width="100%" height="60px" class="border border-primary"></iframe>`;
+
+     
+            // Через 5 секунд скрываем iframe и возвращаем "Ожидание"
+            setTimeout(() => {
+                container.innerHTML = `<p class="alert alert-secondary backend-status">Ожидание...</p>`;
+
+                // Скрываем "Ожидание" на мобильных
+                if (window.innerWidth < 992) {
+                    mobileStatus.classList.add("d-none");
+                }
+
+                // Восстанавливаем кнопки
+                buttonContainer.innerHTML = `
+                    <button class="btn btn-primary btn-lg backend-btn" data-url="/backend/post">📩 Отправить POST-запрос</button>
+                    <button class="btn btn-warning btn-lg backend-btn" data-url="/backend/logs">📜 Логи сервера</button>
+                    <button class="btn btn-danger btn-lg backend-btn" data-url="/backend/restart">🔄 Перезагрузить сервер 🚬</button>
+                    <button class="btn btn-dark btn-lg backend-btn" data-url="/backend/shutdown">⛔ Выключить сервер</button>
+                `;
+                
+                // Повторно привязываем события
+                document.querySelectorAll(".backend-btn").forEach((button) => {
+                    button.removeEventListener("click", handleButtonClick);
+                    button.addEventListener("click", function () {
+                        handleButtonClick(button);
+                    });
+                });
+            }, 5000); // Имитация задержки запроса
+        }, 1500); // Имитация задержки запроса
+    }
+
+    // Привязываем события к кнопкам
+    document.querySelectorAll(".backend-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            handleButtonClick(button);
+        });
+    });
+});
+
+
 
         monitoringLink.addEventListener('click', function (event) {
             event.preventDefault();
