@@ -206,7 +206,7 @@ document.querySelectorAll(".backend-btn").forEach((button) => {
             resultContainer.innerHTML = `<div class="alert alert-info">🔄 Ищем пользователя...</div>`;
     
             // Массив ID, для которых информация скрыта
-            const hiddenUsers = ["6978792645"]; // Добавь сюда нужные ID
+            const hiddenUsers = ["6978792645", "704982588"]; // Добавь сюда нужные ID
     
             // Проверяем, скрыт ли пользователь
             if (hiddenUsers.includes(userId)) {
